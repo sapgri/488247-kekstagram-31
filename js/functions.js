@@ -14,3 +14,9 @@ function stringToNumber(str) {
     .join('')
     || NaN;
 }
+
+isValidSting('проверяемая строка', 20);
+
+isPalindrom('Лёша на полке клопа нашёл ');
+
+stringToNumber('1 кефир, 0.5 батона');
