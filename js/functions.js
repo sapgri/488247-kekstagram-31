@@ -15,7 +15,7 @@ function stringToNumber(str) {
     || NaN;
 }
 
-isValidSting('проверяемая строка', 20);
+isValidString('проверяемая строка', 20);
 
 isPalindrom('Лёша на полке клопа нашёл ');
 
