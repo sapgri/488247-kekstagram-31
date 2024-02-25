@@ -79,14 +79,14 @@ const addComment = (id) => ({
 
 const addComments = () => {
   let id = 4518963;
-  const createCommentsArray = () => {
+
+  return () => {
     const comments = [];
     for (let i = 0; i < getRandomInteger(Comments.MIN, Comments.MAX); i++) {
       comments.push(addComment(id += 1));
     }
     return comments;
   };
-  return createCommentsArray;
 };
 
 const addCommentsToPhoto = addComments();
