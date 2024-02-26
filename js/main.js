@@ -77,24 +77,19 @@ const addComment = (id) => ({
 });
 
 const addComments = () => {
-  let id = 4518363;
-  return () => {
-    const comments = [];
-    for (let i = 0; i < getRandomInteger(Comments.MIN, Comments.MAX); i++) {
-      comments.push(addComment(id += 1));
-    }
-    return comments;
-  };
+  const comments = [];
+  for (let i = 0; i < getRandomInteger(Comments.MIN, Comments.MAX); i++) {
+    comments.push(addComment(i));
+  }
+  return comments;
 };
-
-const addCommentsToPhoto = addComments();
 
 const addPhoto = (id) => ({
   id,
   url: `./photos/${id}.jpg`,
   description: DESCRIPTIONS[id - 1],
   likes: getRandomInteger(Likes.MIN, Likes.MAX),
-  comments: addCommentsToPhoto(),
+  comments: addComments(),
 });
 
 const addPhotos = () => {
