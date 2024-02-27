@@ -61,26 +61,35 @@ const Comments = {
   MAX: 30,
 };
 
-const photos = [];
-
+// Эта функция возвращает случайное число в заданном диапазоне.
 const getRandomInteger = (min, max) => {
   min = Math.ceil(Math.min(min, max));
   max = Math.floor(Math.max(min, max));
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-// Эта функция создает счетчик
+// Эта функция создает счетчик.
 const createCounter = () => {
   let count = 0;
   return () => ++count;
 };
 
-// Эта функция прибавляет единицу к id каждого нового комментария
-const assignCommentId = createCounter();
+// Этот счётчик прибавляет единицу к id каждого нового комментария.
+const countCommentId = createCounter();
 
-// Эта функция прибавляет единицу к id каждого нового фото
-const assignPhotoId = createCounter();
+// Этот счётчик прибавляет единицу к id каждого нового фото.
+const countPhotoId = createCounter();
 
+// Эта функция создает массив объектов.
+const createObjectsArray = (id, addObject, arraySize) => {
+  const objectsArray = [];
+  for (let i = 0; i < arraySize; i++) {
+    objectsArray.push(addObject(id()));
+  }
+  return objectsArray;
+};
+
+// Эта функция создает комментарий.
 const addComment = (id) => ({
   id,
   avatar: `./img/avatar-${getRandomInteger(Avatars.MIN, Avatars.MAX)}.svg`,
@@ -88,26 +97,16 @@ const addComment = (id) => ({
   message: MESSAGES[getRandomInteger(0, MESSAGES.length - 1)],
 });
 
-const addComments = () => {
-  const comments = [];
-  for (let i = 0; i < getRandomInteger(Comments.MIN, Comments.MAX); i++) {
-    comments.push(addComment(assignCommentId()));
-  }
-  return comments;
-};
-
+// Эта функция создает фото.
 const addPhoto = (id) => ({
   id,
   url: `./photos/${id}.jpg`,
   description: DESCRIPTIONS[id - 1],
   likes: getRandomInteger(Likes.MIN, Likes.MAX),
-  comments: addComments(),
+  comments: createObjectsArray(countCommentId, addComment, getRandomInteger(Comments.MIN, Comments.MAX)),
 });
 
-const addPhotos = () => {
-  for (let i = 0; i < QUANTITY; i++) {
-    photos.push(addPhoto(assignPhotoId()));
-  }
-};
-
-addPhotos();
+// Ниже создается массив с фотографиями. Если эту строку вывести в консоль, то будет выведен массив с фотографиями,
+// с id по порядку, начиная с единицы и с сообщениями  с уникальными id по возрастанию. Если присвоить сейчас этот
+// вызов переменной, то линтер будет ругаться на то, что переменная объявлена, но ни разу не используется.
+createObjectsArray(countPhotoId, addPhoto, QUANTITY);
