@@ -69,8 +69,16 @@ const getRandomInteger = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const addComment = (id) => ({
-  id,
+const createCounter = () => { // Эта функция создает счетчик
+  let count = 0;
+  return () => ++count;
+};
+
+const assignCommentId = createCounter(); // Эта функция прибавляет единицу к id каждого нового комментария
+const assignPhotoId = createCounter(); // Эта функция прибавляет единицу к id каждого нового фото
+
+const addComment = () => ({
+  id: assignCommentId(),
   avatar: `./img/avatar-${getRandomInteger(Avatars.MIN, Avatars.MAX)}.svg`,
   name: NAMES[getRandomInteger(0, NAMES.length - 1)],
   message: MESSAGES[getRandomInteger(0, MESSAGES.length - 1)],
@@ -79,7 +87,7 @@ const addComment = (id) => ({
 const addComments = () => {
   const comments = [];
   for (let i = 0; i < getRandomInteger(Comments.MIN, Comments.MAX); i++) {
-    comments.push(addComment(i));
+    comments.push(addComment());
   }
   return comments;
 };
@@ -94,7 +102,7 @@ const addPhoto = (id) => ({
 
 const addPhotos = () => {
   for (let i = 1; i <= QUANTITY; i++) {
-    photos.push(addPhoto(i));
+    photos.push(addPhoto(assignPhotoId()));
   }
 };
 
