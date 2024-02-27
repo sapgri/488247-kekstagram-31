@@ -70,16 +70,16 @@ const getRandomInteger = (min, max) => {
 };
 
 // Эта функция создает счетчик
-const createCounter = () => { // Эта функция создает счетчик
+const createCounter = () => {
   let count = 0;
   return () => ++count;
 };
 
 // Эта функция прибавляет единицу к id каждого нового комментария
-const assignCommentId = createCounter(); // Эта функция прибавляет единицу к id каждого нового комментария
+const assignCommentId = createCounter();
 
 // Эта функция прибавляет единицу к id каждого нового фото
-const assignPhotoId = createCounter(); // Эта функция прибавляет единицу к id каждого нового фото
+const assignPhotoId = createCounter();
 
 const addComment = (id) => ({
   id,
