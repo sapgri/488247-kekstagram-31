@@ -106,7 +106,13 @@ const addPhoto = (id) => ({
   comments: createObjectsArray(countCommentId, addComment, getRandomInteger(Comments.MIN, Comments.MAX)),
 });
 
-// Ниже создается массив с фотографиями. Если эту строку вывести в консоль, то будет выведен массив с фотографиями,
-// с id по порядку, начиная с единицы и с сообщениями  с уникальными id по возрастанию. Если присвоить сейчас этот
-// вызов переменной, то линтер будет ругаться на то, что переменная объявлена, но ни разу не используется.
-createObjectsArray(countPhotoId, addPhoto, QUANTITY);
+// Создается массив с фотографиями и присваивается переменной.
+const photos = createObjectsArray(countPhotoId, addPhoto, QUANTITY);
+
+// console.log(photos);
+// console.log(photos[24]);
+// console.log(photos[15].comments);
+
+// В этом коде в данный момент экспорт это всего лишь способ сделать так, чтоб линтер не
+// ругался на то что переменная определена, но ни разу не использовалась.
+export {photos};
