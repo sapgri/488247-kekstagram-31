@@ -61,35 +61,20 @@ const Comments = {
   MAX: 30,
 };
 
-// Эта функция возвращает случайное число в заданном диапазоне.
 const getRandomInteger = (min, max) => {
   min = Math.ceil(Math.min(min, max));
   max = Math.floor(Math.max(min, max));
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-// Эта функция создает счетчик.
-const createCounter = () => {
-  let count = 0;
-  return () => ++count;
-};
-
-// Этот счётчик прибавляет единицу к id каждого нового комментария.
-const countCommentId = createCounter();
-
-// Этот счётчик прибавляет единицу к id каждого нового фото.
-const countPhotoId = createCounter();
-
-// Эта функция создает массив объектов.
-const createObjectsArray = (id, addObject, arraySize) => {
+const createObjectsArray = (addObject, arraySize) => {
   const objectsArray = [];
   for (let i = 0; i < arraySize; i++) {
-    objectsArray.push(addObject(id()));
+    objectsArray.push(addObject(i + 1));
   }
   return objectsArray;
 };
 
-// Эта функция создает комментарий.
 const addComment = (id) => ({
   id,
   avatar: `./img/avatar-${getRandomInteger(Avatars.MIN, Avatars.MAX)}.svg`,
@@ -97,22 +82,14 @@ const addComment = (id) => ({
   message: MESSAGES[getRandomInteger(0, MESSAGES.length - 1)],
 });
 
-// Эта функция создает фото.
 const addPhoto = (id) => ({
   id,
   url: `./photos/${id}.jpg`,
   description: DESCRIPTIONS[id - 1],
   likes: getRandomInteger(Likes.MIN, Likes.MAX),
-  comments: createObjectsArray(countCommentId, addComment, getRandomInteger(Comments.MIN, Comments.MAX)),
+  comments: createObjectsArray(addComment, getRandomInteger(Comments.MIN, Comments.MAX)),
 });
 
-// Создается массив с фотографиями и присваивается переменной.
-const photos = createObjectsArray(countPhotoId, addPhoto, QUANTITY);
+const photos = createObjectsArray(addPhoto, QUANTITY);
 
-// console.log(photos);
-// console.log(photos[24]);
-// console.log(photos[15].comments);
-
-// В этом коде в данный момент экспорт это всего лишь способ сделать так, чтоб линтер не
-// ругался на то что переменная определена, но ни разу не использовалась.
 export {photos};
