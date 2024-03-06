@@ -8,7 +8,7 @@ const getRandomInteger = (min, max) => {
 const createObjectsArray = (addObject, arraySize) => {
   const objectsArray = [];
   for (let i = 0; i < arraySize; i++) {
-    objectsArray.push(addObject(i + 1));
+    objectsArray.push(addObject());
   }
   return objectsArray;
 };
