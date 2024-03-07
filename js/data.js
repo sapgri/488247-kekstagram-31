@@ -63,17 +63,20 @@ const Comments = {
   MAX: 30,
 };
 
-const addComment = (id) => ({
-  id,
+let commentId = 0;
+let photoId = 0;
+
+const addComment = () => ({
+  id: commentId++,
   avatar: `./img/avatar-${getRandomInteger(Avatars.MIN, Avatars.MAX)}.svg`,
   name: NAMES[getRandomInteger(0, NAMES.length - 1)],
   message: MESSAGES[getRandomInteger(0, MESSAGES.length - 1)],
 });
 
-const addPhoto = (id) => ({
-  id,
-  url: `./photos/${id}.jpg`,
-  description: DESCRIPTIONS[id - 1],
+const addPhoto = () => ({
+  id: photoId++,
+  url: `./photos/${photoId}.jpg`,
+  description: DESCRIPTIONS[photoId - 1],
   likes: getRandomInteger(Likes.MIN, Likes.MAX),
   comments: createObjectsArray(addComment, getRandomInteger(Comments.MIN, Comments.MAX)),
 });
