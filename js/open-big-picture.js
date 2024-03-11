@@ -63,12 +63,10 @@ function deleteHandlers() {
 }
 
 const onBigPictureOpen = (evt) => {
-  if (evt.target.matches('.picture__img') || evt.target.matches('.picture')) {
+  if (evt.target.closest('.picture')) {
     evt.preventDefault();
 
-    const picture = evt.target.matches('.picture__img')
-      ? photos[evt.target.parentNode.dataset.id]
-      : photos[evt.target.dataset.id];
+    const picture = photos[evt.target.closest('.picture').dataset.id];
 
     body.classList.add('modal-open');
     bigPicture.classList.remove('hidden');
