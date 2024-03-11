@@ -1,6 +1,11 @@
 import { photos } from './data.js';
 import { isEscapeKey, isEnterKey } from './util.js';
 
+const Avatar = {
+  HEIGHT: 35,
+  WIDTH: 35,
+};
+
 const body = document.querySelector('body');
 const pictures = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
@@ -24,8 +29,8 @@ const createComments = (comments, container) => {
     img.classList.add('social__picture');
     img.src = comment.avatar;
     img.alt = comment.name;
-    img.width = 35;
-    img.height = 35;
+    img.width = Avatar.WIDTH;
+    img.height = Avatar.HEIGHT;
 
     const paragraph = document.createElement('p');
     paragraph.classList.add('social__text');
