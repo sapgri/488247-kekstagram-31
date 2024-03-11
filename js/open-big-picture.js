@@ -1,6 +1,8 @@
 import { photos } from './data.js';
 import { isEscapeKey, isEnterKey } from './util.js';
 
+const NUMBER_TO_LOAD_COMMENTS = 5;
+
 const Avatar = {
   HEIGHT: 35,
   WIDTH: 35,
@@ -11,70 +13,96 @@ const pictures = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 const socialCommentCount = bigPicture.querySelector('.social__comment-count');
-const commentLoader = bigPicture.querySelector('.comments-loader');
+const socialCommentShownCount = bigPicture.querySelector('.social__comment-shown-count');
+const commentLoader = bigPicture.querySelector('.social__comments-loader.comments-loader');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
 const socialCaption = bigPicture.querySelector('.social__caption');
 const socialCommentTotalCount = bigPicture.querySelector('.social__comment-total-count');
 const likesCount = bigPicture.querySelector('.likes-count');
 const socialComments = bigPicture.querySelector('.social__comments');
 
-const createComments = (comments, container) => {
-  container.innerHTML = '';
+let numberShownComments;
+let picture;
 
-  comments.forEach((comment) => {
+const createComments = (comments, container, quantity) => {
+  container.innerHTML = '';
+  socialCommentShownCount.textContent = Math.min(comments.length, quantity);
+
+  if (comments.length > NUMBER_TO_LOAD_COMMENTS) {
+    commentLoader.classList.remove('hidden');
+  }
+
+  for (let i = 0; i < socialCommentShownCount.textContent; i++) {
     const listItem = document.createElement('li');
     listItem.classList.add('social__comment');
 
     const img = document.createElement('img');
     img.classList.add('social__picture');
-    img.src = comment.avatar;
-    img.alt = comment.name;
-    img.width = Avatar.WIDTH;
+    img.src = comments[i].avatar;
+    img.alt = comments[i].name;
     img.height = Avatar.HEIGHT;
+    img.width = Avatar.WIDTH;
 
     const paragraph = document.createElement('p');
     paragraph.classList.add('social__text');
-    paragraph.textContent = comment.message;
+    paragraph.textContent = comments[i].message;
 
     listItem.append(img);
     listItem.append(paragraph);
     container.append(listItem);
-  });
+  }
+
+  if (+socialCommentShownCount.textContent === comments.length) {
+    commentLoader.classList.add('hidden');
+  }
+
+  socialCommentCount.childNodes[3].textContent = comments.length % 10 === 1
+    && comments.length % 100 !== 11
+    ? ' комментария'
+    : ' комментариев';
+};
+
+const onLoadComments = () => {
+  createComments(
+    picture.comments,
+    socialComments,
+    numberShownComments += NUMBER_TO_LOAD_COMMENTS
+  );
 };
 
 const onBigPictureClose = () => {
   body.classList.remove('modal-open');
   bigPicture.classList.add('hidden');
-  socialCommentCount.classList.remove('hidden');
-  commentLoader.classList.remove('hidden');
-  bigPictureCancel.removeEventListener('click', onBigPictureClose);
+  commentLoader.removeEventListener('click', onLoadComments);
   document.removeEventListener('keydown', onEscapeKeydown);
 };
 
-function onEscapeKeydown (evt) {
+function onEscapeKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     onBigPictureClose();
   }
 }
 
-const onBigPictureOpen = (evt) => {
+const onThumbnailClick = (evt) => {
   if (evt.target.closest('.picture')) {
     evt.preventDefault();
 
-    const picture = photos[evt.target.closest('.picture').dataset.id];
+    picture = photos[evt.target.closest('.picture').dataset.id];
 
     body.classList.add('modal-open');
     bigPicture.classList.remove('hidden');
-    socialCommentCount.classList.add('hidden');
-    commentLoader.classList.add('hidden');
     bigPictureImg.src = picture.url;
     bigPictureImg.alt = picture.description;
     socialCaption.textContent = picture.description;
     socialCommentTotalCount.textContent = picture.comments.length;
     likesCount.textContent = picture.likes;
 
-    createComments(picture.comments, socialComments);
+    numberShownComments = NUMBER_TO_LOAD_COMMENTS;
+
+    createComments(picture.comments, socialComments, numberShownComments);
+
+    commentLoader.addEventListener('click', onLoadComments);
 
     bigPictureCancel.addEventListener('click', onBigPictureClose);
 
@@ -85,10 +113,10 @@ const onBigPictureOpen = (evt) => {
 const onEnterKeydown = (evt) => {
   if (isEnterKey(evt)) {
     evt.preventDefault();
-    onBigPictureOpen(evt);
+    onThumbnailClick(evt);
   }
 };
 
 pictures.addEventListener('keydown', onEnterKeydown);
 
-pictures.addEventListener('click', onBigPictureOpen);
+pictures.addEventListener('click', onThumbnailClick);
