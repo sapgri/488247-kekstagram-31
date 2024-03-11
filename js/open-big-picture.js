@@ -47,19 +47,15 @@ const onBigPictureClose = () => {
   bigPicture.classList.add('hidden');
   socialCommentCount.classList.remove('hidden');
   commentLoader.classList.remove('hidden');
-  deleteHandlers();
+  bigPictureCancel.removeEventListener('click', onBigPictureClose);
+  document.removeEventListener('keydown', onEscapeKeydown);
 };
 
-const onEscapeKeydown = (evt) => {
+function onEscapeKeydown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     onBigPictureClose();
   }
-};
-
-function deleteHandlers() {
-  bigPictureCancel.removeEventListener('click', onBigPictureClose);
-  document.removeEventListener('keydown', onEscapeKeydown);
 }
 
 const onBigPictureOpen = (evt) => {
