@@ -13,4 +13,8 @@ const createObjectsArray = (addObject, arraySize) => {
   return objectsArray;
 };
 
-export { getRandomInteger, createObjectsArray };
+const isEnterKey = (evt) => evt.key === 'Enter';
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export { getRandomInteger, createObjectsArray, isEscapeKey, isEnterKey };

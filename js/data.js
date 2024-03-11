@@ -81,4 +81,6 @@ const addPhoto = () => ({
   comments: createObjectsArray(addComment, getRandomInteger(Comments.MIN, Comments.MAX)),
 });
 
-export { addPhoto, QUANTITY };
+const photos = createObjectsArray(addPhoto, QUANTITY);
+
+export { photos };
