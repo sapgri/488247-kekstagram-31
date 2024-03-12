@@ -1,5 +1,5 @@
 import { photos } from './data.js';
-import { isEscapeKey, isEnterKey } from './util.js';
+import { isEscapeKey, numDecline } from './util.js';
 
 const NUMBER_TO_LOAD_COMMENTS = 5;
 
@@ -8,7 +8,6 @@ const Avatar = {
   WIDTH: 35,
 };
 
-const body = document.querySelector('body');
 const pictures = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
@@ -32,6 +31,10 @@ const createComments = (comments, container, quantity) => {
     commentLoader.classList.remove('hidden');
   }
 
+  if (+socialCommentShownCount.textContent === comments.length) {
+    commentLoader.classList.add('hidden');
+  }
+
   for (let i = 0; i < socialCommentShownCount.textContent; i++) {
     const listItem = document.createElement('li');
     listItem.classList.add('social__comment');
@@ -52,14 +55,9 @@ const createComments = (comments, container, quantity) => {
     container.append(listItem);
   }
 
-  if (+socialCommentShownCount.textContent === comments.length) {
-    commentLoader.classList.add('hidden');
-  }
-
-  socialCommentCount.childNodes[3].textContent = comments.length % 10 === 1
-    && comments.length % 100 !== 11
-    ? ' комментария'
-    : ' комментариев';
+  socialCommentCount.childNodes[3].textContent = numDecline(
+    comments.length, ' комментария', ' комментариев', ' комментариев'
+  );
 };
 
 const onLoadComments = () => {
@@ -71,7 +69,7 @@ const onLoadComments = () => {
 };
 
 const onBigPictureClose = () => {
-  body.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
   bigPicture.classList.add('hidden');
   commentLoader.removeEventListener('click', onLoadComments);
   document.removeEventListener('keydown', onEscapeKeydown);
@@ -84,13 +82,15 @@ function onEscapeKeydown(evt) {
   }
 }
 
+bigPictureCancel.addEventListener('click', onBigPictureClose);
+
 const onThumbnailClick = (evt) => {
   if (evt.target.closest('.picture')) {
     evt.preventDefault();
 
     picture = photos[evt.target.closest('.picture').dataset.id];
 
-    body.classList.add('modal-open');
+    document.body.classList.add('modal-open');
     bigPicture.classList.remove('hidden');
     bigPictureImg.src = picture.url;
     bigPictureImg.alt = picture.description;
@@ -104,19 +104,8 @@ const onThumbnailClick = (evt) => {
 
     commentLoader.addEventListener('click', onLoadComments);
 
-    bigPictureCancel.addEventListener('click', onBigPictureClose);
-
     document.addEventListener('keydown', onEscapeKeydown);
   }
 };
-
-const onEnterKeydown = (evt) => {
-  if (isEnterKey(evt)) {
-    evt.preventDefault();
-    onThumbnailClick(evt);
-  }
-};
-
-pictures.addEventListener('keydown', onEnterKeydown);
 
 pictures.addEventListener('click', onThumbnailClick);
