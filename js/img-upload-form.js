@@ -1,16 +1,22 @@
-import { isEscapeKey, numDecline } from './util.js';
+import { isEscapeKey } from './util.js';
+import { onEffectChange } from './effects-slider.js';
+import { error, isHashtagsValid } from './check-hashtag-validity.js';
 
-const MAX_HASHTAGS = 5;
-const MAX_SYMBOLS = 20;
+const SCALE_STEP = 0.25;
 
-const imgUpload = document.querySelector('.img-upload');
 const imgUploadForm = document.querySelector('.img-upload__form');
-const uploadOverlay = imgUpload.querySelector('.img-upload__overlay');
-const uploadFile = imgUpload.querySelector('#upload-file');
-const imgUploadCancel = imgUpload.querySelector('.img-upload__cancel');
-const inputHashtag = imgUpload.querySelector('.text__hashtags');
+const uploadOverlay = imgUploadForm.querySelector('.img-upload__overlay');
+const uploadFile = imgUploadForm.querySelector('#upload-file');
+const imgUploadCancel = imgUploadForm.querySelector('.img-upload__cancel');
+const smaller = imgUploadForm.querySelector('.scale__control--smaller');
+const bigger = imgUploadForm.querySelector('.scale__control--bigger');
+const img = imgUploadForm.querySelector('.img-upload__preview');
+const scaleControl = imgUploadForm.querySelector('.scale__control--value');
+const effectLevel = imgUploadForm.querySelector('.img-upload__effect-level');
+const effectsList = imgUploadForm.querySelector('.effects__list');
+const inputHashtag = imgUploadForm.querySelector('.text__hashtags');
 
-let errorMessage = '';
+let scale = 1;
 
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__form',
@@ -18,66 +24,15 @@ const pristine = new Pristine(imgUploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-const error = () => errorMessage;
-
-const isHashtagsValid = (value) => {
-  errorMessage = '';
-
-  const inputText = value.toLowerCase().trim();
-
-  if (!inputText) {
-    return true;
-  }
-
-  const inputArray = inputText.split(/\s+/);
-
-  const rules = [
-    {
-      check: inputArray.some((item) => item === '#'),
-      error: 'Хештег не может состоять только из одной решётки',
-    },
-    {
-      check: inputArray.some((item) => item.slice(1).includes('#')),
-      error: 'Хештеги разделяются пробелами',
-    },
-    {
-      check: inputArray.some((item) => item[0] !== '#'),
-      error: 'Хештег должен начинаться с символа \'#\'',
-    },
-    {
-      check: inputArray.some((item, num, array) => array.includes(item, num + 1)),
-      error: 'Хештеги не должны повторяться',
-    },
-    {
-      check: inputArray.some((item) => item.length > MAX_SYMBOLS),
-      error: `Максимальная длина одного хештега ${MAX_SYMBOLS} символов, включая решётку`,
-    },
-    {
-      check: inputArray.length > MAX_HASHTAGS,
-      error: `Нельзя указать больше ${MAX_HASHTAGS} ${numDecline(
-        MAX_HASHTAGS, 'хештега', 'хештегов', 'хештегов'
-      )}`,
-    },
-    {
-      check: inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),
-      error: 'Хештег содержит недопустимые символы',
-    },
-  ];
-
-  return rules.every((rule) => {
-    const isInvalid = rule.check;
-    if (isInvalid) {
-      errorMessage = rule.error;
-    }
-    return !isInvalid;
-  });
-};
-
 pristine.addValidator(inputHashtag, isHashtagsValid, error, 2, false);
 
 const onImgUploadClose = () => {
   document.body.classList.remove('modal-open');
   uploadOverlay.classList.add('hidden');
+  scale = 1;
+  img.style.transform = `scale(${scale})`;
+  effectLevel.classList.add('hidden');
+  img.style.filter = 'none';
   imgUploadForm.reset();
   document.removeEventListener('keydown', onEscapeKeydown);
 };
@@ -92,18 +47,32 @@ function onEscapeKeydown (evt) {
   }
 }
 
-const onHashtagInput = () => {
-  isHashtagsValid(inputHashtag.value);
-};
-
-const onSelectPhoto = () => {
+const onPhotoSelect = () => {
   document.body.classList.add('modal-open');
   uploadOverlay.classList.remove('hidden');
   imgUploadCancel.addEventListener('click', onImgUploadClose);
   document.addEventListener('keydown', onEscapeKeydown);
 };
 
-const onSubmitForm = (evt) => {
+const onSmallerClick = () => {
+  if (scale > SCALE_STEP) {
+    img.style.transform = `scale(${scale -= SCALE_STEP})`;
+    scaleControl.value = `${scale * 100}%`;
+  }
+};
+
+const onBiggerClick = () => {
+  if (scale < 1) {
+    img.style.transform = `scale(${scale += SCALE_STEP})`;
+    scaleControl.value = `${scale * 100}%`;
+  }
+};
+
+const onHashtagInput = () => {
+  isHashtagsValid(inputHashtag.value);
+};
+
+const onFormSubmit = (evt) => {
   evt.preventDefault();
 
   if (pristine.validate()) {
@@ -112,8 +81,14 @@ const onSubmitForm = (evt) => {
   }
 };
 
+uploadFile.addEventListener('change', onPhotoSelect);
+
+smaller.addEventListener('click', onSmallerClick);
+
+bigger.addEventListener('click', onBiggerClick);
+
+effectsList.addEventListener('change', onEffectChange);
+
 inputHashtag.addEventListener('input', onHashtagInput);
 
-uploadFile.addEventListener('change', onSelectPhoto);
-
-imgUploadForm.addEventListener('submit', onSubmitForm);
+imgUploadForm.addEventListener('submit', onFormSubmit);
