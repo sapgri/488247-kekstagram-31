@@ -13,8 +13,15 @@ const createObjectsArray = (addObject, arraySize) => {
   return objectsArray;
 };
 
-const isEnterKey = (evt) => evt.key === 'Enter';
+const numDecline = (num, nominative, genitiveSingular, genitivePlural) => {
+  if (num % 10 === 0 || num % 100 > 4 && num % 100 < 21) {
+    return genitivePlural;
+  }
+  return num % 10 === 1
+    ? nominative
+    : genitiveSingular;
+};
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export { getRandomInteger, createObjectsArray, isEscapeKey, isEnterKey };
+export { getRandomInteger, createObjectsArray, isEscapeKey, numDecline };
