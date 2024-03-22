@@ -2,6 +2,11 @@ import { numDecline } from './util.js';
 
 const MAX_HASHTAGS = 5;
 const MAX_SYMBOLS = 20;
+const MAX_DESCRIPTION_LENGTH = 140;
+
+const imgUploadForm = document.querySelector('.img-upload__form');
+const inputHashtags = imgUploadForm.querySelector('.text__hashtags');
+const inputDescription = imgUploadForm.querySelector('.text__description');
 
 let errorMessage = '';
 
@@ -60,4 +65,26 @@ const isHashtagsValid = (value) => {
   });
 };
 
-export { error, isHashtagsValid };
+const isDescriptionValid = () => inputDescription.value.length <= MAX_DESCRIPTION_LENGTH;
+
+const pristine = new Pristine(imgUploadForm, {
+  classTo: 'img-upload__form',
+  errorClass: 'has-danger',
+  successClass: 'has-success',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'div',
+  errorTextClass: 'img-upload__field-wrapper--error',
+});
+
+pristine.addValidator(inputHashtags, isHashtagsValid, error, 1, false);
+
+pristine.addValidator(
+  inputDescription,
+  isDescriptionValid,
+  'Текст комментария не должен превышать 140 символов, включая пробелы',
+  1, false
+);
+
+const isFormValid = (input) => isHashtagsValid(input) && isDescriptionValid();
+
+export { isFormValid, pristine };

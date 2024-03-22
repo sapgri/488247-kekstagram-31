@@ -12,37 +12,39 @@ const socialCommentShownCount = bigPictureSocial.querySelector('.social__comment
 const socialCommentCount = bigPictureSocial.querySelector('.social__comment-count');
 const commentLoader = bigPictureSocial.querySelector('.comments-loader');
 
+const createComment = (comment, container) => {
+  const { avatar, name, message } = comment;
+  const listItem = document.createElement('li');
+  listItem.classList.add('social__comment');
+
+  const img = document.createElement('img');
+  img.classList.add('social__picture');
+  img.src = avatar;
+  img.alt = name;
+  img.height = Avatar.HEIGHT;
+  img.width = Avatar.WIDTH;
+
+  const paragraph = document.createElement('p');
+  paragraph.classList.add('social__text');
+  paragraph.textContent = message;
+
+  listItem.append(img);
+  listItem.append(paragraph);
+  container.append(listItem);
+};
+
 const createComments = (comments, container, quantity) => {
   container.innerHTML = '';
   socialCommentShownCount.textContent = Math.min(comments.length, quantity);
 
-  if (comments.length > NUMBER_TO_LOAD_COMMENTS) {
+  if (+socialCommentShownCount.textContent === comments.length) {
+    commentLoader.classList.add('hidden');
+  } else {
     commentLoader.classList.remove('hidden');
   }
 
-  if (+socialCommentShownCount.textContent === comments.length) {
-    commentLoader.classList.add('hidden');
-  }
-
-  for (let i = 0; i < socialCommentShownCount.textContent; i++) {
-    const listItem = document.createElement('li');
-    listItem.classList.add('social__comment');
-
-    const img = document.createElement('img');
-    img.classList.add('social__picture');
-    img.src = comments[i].avatar;
-    img.alt = comments[i].name;
-    img.height = Avatar.HEIGHT;
-    img.width = Avatar.WIDTH;
-
-    const paragraph = document.createElement('p');
-    paragraph.classList.add('social__text');
-    paragraph.textContent = comments[i].message;
-
-    listItem.append(img);
-    listItem.append(paragraph);
-    container.append(listItem);
-  }
+  comments.slice(0, socialCommentShownCount.textContent)
+    .forEach((comment) => createComment(comment, container));
 
   socialCommentCount.childNodes[3].textContent = numDecline(
     comments.length, ' комментария', ' комментариев', ' комментариев'
