@@ -1,4 +1,4 @@
-import { photos } from './data.js';
+import { getData } from './api.js';
 import { createComments, NUMBER_TO_LOAD_COMMENTS } from './create-comments.js';
 import { isEscapeKey } from './util.js';
 
@@ -41,23 +41,26 @@ const onThumbnailClick = (evt) => {
   if (evt.target.closest('.picture')) {
     evt.preventDefault();
 
-    picture = photos[evt.target.closest('.picture').dataset.id];
+    getData().then((photos) => {
+      picture = photos[evt.target.closest('.picture').dataset.id];
+      const { url, description, comments, likes } = picture;
 
-    document.body.classList.add('modal-open');
-    bigPicture.classList.remove('hidden');
-    bigPictureImg.src = picture.url;
-    bigPictureImg.alt = picture.description;
-    socialCaption.textContent = picture.description;
-    commentsTotalCount.textContent = picture.comments.length;
-    likesCount.textContent = picture.likes;
+      document.body.classList.add('modal-open');
+      bigPicture.classList.remove('hidden');
+      bigPictureImg.src = url;
+      bigPictureImg.alt = description;
+      socialCaption.textContent = description;
+      commentsTotalCount.textContent = comments.length;
+      likesCount.textContent = likes;
 
-    numberShownComments = NUMBER_TO_LOAD_COMMENTS;
+      numberShownComments = NUMBER_TO_LOAD_COMMENTS;
 
-    createComments(picture.comments, socialComments, numberShownComments);
+      createComments(comments, socialComments, numberShownComments);
 
-    commentLoader.addEventListener('click', onCommentsLoad);
+      commentLoader.addEventListener('click', onCommentsLoad);
 
-    document.addEventListener('keydown', onEscapeKeydown);
+      document.addEventListener('keydown', onEscapeKeydown);
+    });
   }
 };
 
