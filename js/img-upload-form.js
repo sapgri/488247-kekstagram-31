@@ -36,6 +36,7 @@ const onImgUploadClose = () => {
   img.style.transform = `scale(${scale})`;
   effectLevel.classList.add('hidden');
   img.style.filter = 'none';
+  submitButton.disabled = false;
   imgUploadForm.reset();
   document.removeEventListener('keydown', onEscapeKeydown);
 };
@@ -53,7 +54,7 @@ function onEscapeKeydown(evt) {
 const onPhotoSelect = () => {
   document.body.classList.add('modal-open');
   uploadOverlay.classList.remove('hidden');
-  document.addEventListener('keydown', onEscapeKeydown, false);
+  document.addEventListener('keydown', onEscapeKeydown);
 };
 
 const changeZoom = (factor = 1) => {
@@ -105,9 +106,8 @@ const onFormSubmit = (onSuccess) => {
           if (submitButton.textContent === SubmitButtonText.IDLE) {
             showModal(successPopup, 'success');
           }
-        });
-    } else {
-      showModal(errorPopup, 'error');
+        })
+        .catch(() => showModal(errorPopup, 'error'));
     }
   });
 };

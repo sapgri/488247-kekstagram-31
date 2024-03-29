@@ -1,3 +1,5 @@
+const RERENDER_DELAY = 500;
+
 const GenitiveSingular = {
   TOP: 20,
   BOTTOM: 5,
@@ -18,4 +20,13 @@ const numDecline = (num, nominative, genitiveSingular, genitivePlural) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export { isEscapeKey, numDecline };
+const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export { isEscapeKey, numDecline, debounce };
