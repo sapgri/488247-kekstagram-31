@@ -32,9 +32,9 @@ let scale = 1;
 const onImgUploadClose = () => {
   document.body.classList.remove('modal-open');
   uploadOverlay.classList.add('hidden');
-  img.style.transform = 'scale(1)';
   effectLevel.classList.add('hidden');
-  img.style.filter = 'none';
+  img.style.transform = '';
+  img.style.filter = '';
   submitButton.disabled = false;
   scale = 1;
   imgUploadForm.reset();
