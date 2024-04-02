@@ -38,7 +38,7 @@ const onImgUploadClose = () => {
   submitButton.disabled = false;
   scale = 1;
   imgUploadForm.reset();
-  pristine.reset(); // term
+  pristine.reset();
   document.removeEventListener('keydown', onEscapeKeydown);
 };
 
@@ -102,11 +102,9 @@ const onFormSubmit = (onSuccess) => {
       const formData = new FormData(evt.target);
       sendData(formData)
         .then(onSuccess)
-        .then(unblockSubmitButton)
+        .then(() => unblockSubmitButton())
         .then(() => {
-          if (submitButton.textContent === SubmitButtonText.IDLE) {
-            showModal(successPopup, 'success');
-          }
+          showModal(successPopup, 'success');
         })
         .catch(() => showModal(errorPopup, 'error'));
     }
