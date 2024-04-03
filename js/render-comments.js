@@ -12,7 +12,7 @@ const socialCommentShownCount = bigPictureSocial.querySelector('.social__comment
 const socialCommentCount = bigPictureSocial.querySelector('.social__comment-count');
 const commentLoader = bigPictureSocial.querySelector('.comments-loader');
 
-const createComment = (comment, container) => {
+const renderComment = (comment, container) => {
   const { avatar, name, message } = comment;
   const listItem = document.createElement('li');
   listItem.classList.add('social__comment');
@@ -33,7 +33,7 @@ const createComment = (comment, container) => {
   container.append(listItem);
 };
 
-const createComments = (comments, container, quantity) => {
+const renderComments = (comments, container, quantity) => {
   container.innerHTML = '';
   socialCommentShownCount.textContent = Math.min(comments.length, quantity);
 
@@ -44,11 +44,11 @@ const createComments = (comments, container, quantity) => {
   }
 
   comments.slice(0, socialCommentShownCount.textContent)
-    .forEach((comment) => createComment(comment, container));
+    .forEach((comment) => renderComment(comment, container));
 
   socialCommentCount.childNodes[3].textContent = numDecline(
     comments.length, ' комментария', ' комментариев', ' комментариев'
   );
 };
 
-export { createComments, NUMBER_TO_LOAD_COMMENTS };
+export { renderComments, NUMBER_TO_LOAD_COMMENTS };
