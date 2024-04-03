@@ -1,6 +1,6 @@
 import { isEscapeKey } from './util.js';
 import { onEffectChange } from './effects-slider.js';
-import { isFormValid, pristine } from './check-validity.js';
+import { pristine } from './check-validity.js';
 import { sendData } from './api.js';
 import { showModal } from './show-modal.js';
 
@@ -85,11 +85,11 @@ const onBiggerClick = () => {
 };
 
 const onHashtagInput = () => {
-  submitButton.disabled = !isFormValid(inputHashtags.value);
+  submitButton.disabled = !pristine.validate();
 };
 
 const onCommentInput = () => {
-  submitButton.disabled = !isFormValid(inputHashtags.value);
+  submitButton.disabled = !pristine.validate();
 };
 
 const onImgUploadFormSubmit = (evt) => {

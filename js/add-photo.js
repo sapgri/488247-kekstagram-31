@@ -3,7 +3,7 @@ const FILE_TYPES = ['.gif', '.jpg', '.jpeg', '.png'];
 const uploadFile = document.querySelector('#upload-file');
 const preview = document.querySelector('.img-upload__preview img');
 const effectList = document.querySelector('.effects__list');
-const smallImages = effectList.querySelectorAll('span');
+const smallImages = effectList.querySelectorAll('.effects__preview');
 
 const onUploadImageChange = () => {
   const file = uploadFile.files[0];
@@ -12,15 +12,16 @@ const onUploadImageChange = () => {
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
   if (matches) {
-    const reader = new FileReader();
+    const objectURL = URL.createObjectURL(file);
+    preview.src = objectURL;
 
-    reader.addEventListener('load', () => {
-      preview.src = reader.result;
-      smallImages.forEach((evt) => {
-        evt.style.backgroundImage = `url(${reader.result})`;
-      });
+    smallImages.forEach((evt) => {
+      evt.style.backgroundImage = `url(${preview.src})`;
     });
-    reader.readAsDataURL(file);
+
+    preview.addEventListener('load', () => {
+      URL.revokeObjectURL(objectURL);
+    });
   }
 };
 

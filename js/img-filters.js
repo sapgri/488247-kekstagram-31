@@ -32,7 +32,8 @@ const applyFilter = (data) => {
     'filter-default': data,
     'filter-random': shuffleArray([...data]).slice(0, RENDER_PHOTOS_COUNT),
     'filter-discussed': data.toSorted(
-      (firstItem, secondItem) => secondItem.comments.length - firstItem.comments.length),
+      (firstItem, secondItem) => secondItem.comments.length - firstItem.comments.length
+    ),
   };
 
   removePictures();
