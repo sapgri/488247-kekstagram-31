@@ -1,16 +1,12 @@
 import { getData } from './api.js';
-import { renderThumbnails } from './render-thumbnails.js';
-import './open-big-picture.js';
-import { onFormSubmit, onImgUploadClose } from './img-upload-form.js';
-
-const dataError = document.querySelector('#data-error').content.querySelector('.data-error');
+import { onSuccess, onError } from './request-result.js';
+import './img-upload-form.js';
+import './add-photo.js';
 
 getData()
-  .then((photos) => {
-    renderThumbnails(photos);
-  }).catch(() => {
-    document.body.append(dataError);
-    setTimeout(() => document.body.removeChild(dataError), 5000);
+  .then((data) => {
+    onSuccess(data);
+  })
+  .catch(() => {
+    onError();
   });
-
-onFormSubmit(onImgUploadClose);
