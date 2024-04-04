@@ -16,7 +16,7 @@ const onUploadImageChange = () => {
     preview.src = objectURL;
 
     smallImages.forEach((evt) => {
-      evt.style.backgroundImage = `url(${preview.src})`;
+      evt.style.backgroundImage = `url(${objectURL})`;
     });
 
     preview.addEventListener('load', () => {

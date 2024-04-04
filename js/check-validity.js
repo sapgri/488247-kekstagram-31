@@ -10,7 +10,7 @@ const inputDescription = imgUploadForm.querySelector('.text__description');
 
 let errorMessage = '';
 
-const error = () => errorMessage;
+const getErrorMessage = () => errorMessage;
 
 const isHashtagsValid = (value) => {
   errorMessage = '';
@@ -73,7 +73,7 @@ const pristine = new Pristine(imgUploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-pristine.addValidator(inputHashtags, isHashtagsValid, error, 1, false);
+pristine.addValidator(inputHashtags, isHashtagsValid, getErrorMessage, 1, false);
 
 pristine.addValidator(
   inputDescription,
