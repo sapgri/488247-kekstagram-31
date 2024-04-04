@@ -118,11 +118,9 @@ uploadFile.addEventListener('change', onPhotoSelect);
 imgUploadCancel.addEventListener('click', onImgUploadClose);
 
 smaller.addEventListener('click', onSmallerClick);
-
 bigger.addEventListener('click', onBiggerClick);
 
 effectsList.addEventListener('change', onEffectChange);
 
 inputHashtags.addEventListener('input', onHashtagInput);
-
 inputDescription.addEventListener('input', onCommentInput);
