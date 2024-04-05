@@ -102,13 +102,12 @@ const onImgUploadFormSubmit = (evt) => {
     sendData(new FormData(evt.target))
       .then(() => {
         onImgUploadClose();
-        unblockSubmitButton();
         showModal(successPopupNode, 'success');
       })
       .catch(() => {
-        unblockSubmitButton();
         showModal(errorPopupNode, 'error');
-      });
+      })
+      .finally(() => unblockSubmitButton());
   }
 };
 
