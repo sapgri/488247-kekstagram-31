@@ -4,9 +4,5 @@ import './img-upload-form.js';
 import './add-photo.js';
 
 getData()
-  .then((data) => {
-    onSuccess(data);
-  })
-  .catch(() => {
-    onError();
-  });
+  .then((data) => onSuccess(data))
+  .catch(() => onError());

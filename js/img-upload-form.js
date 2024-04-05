@@ -104,9 +104,7 @@ const onImgUploadFormSubmit = (evt) => {
         onImgUploadClose();
         showModal(successPopupNode, 'success');
       })
-      .catch(() => {
-        showModal(errorPopupNode, 'error');
-      })
+      .catch(() => showModal(errorPopupNode, 'error'))
       .finally(() => unblockSubmitButton());
   }
 };
