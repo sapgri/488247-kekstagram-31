@@ -1,9 +1,9 @@
 import { isEscapeKey } from './util.js';
 
-const body = document.body;
+const bodyNode = document.body;
 
 const showModal = (element, prefix) => {
-  body.append(element);
+  bodyNode.append(element);
 
   const onModalEscape = (evt) => {
     if (isEscapeKey(evt)) {
@@ -21,12 +21,12 @@ const showModal = (element, prefix) => {
 
   function removeModal() {
     element.remove();
-    body.removeEventListener('keydown', onModalEscape);
+    bodyNode.removeEventListener('keydown', onModalEscape);
   }
 
   element.addEventListener('click', onCloseClick);
 
-  body.addEventListener('keydown', onModalEscape);
+  bodyNode.addEventListener('keydown', onModalEscape);
 };
 
 export { showModal };

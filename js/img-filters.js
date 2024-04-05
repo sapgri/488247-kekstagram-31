@@ -4,22 +4,22 @@ import { debounce, shuffleArray } from './util.js';
 const RENDER_PHOTOS_COUNT = 10;
 const ACTIVE_CLASS = 'img-filters__button--active';
 
-const imgFiltersForm = document.querySelector('.img-filters__form');
-const pictures = document.getElementsByClassName('picture');
+const imgFiltersFormNode = document.querySelector('.img-filters__form');
+const picturesNode = document.getElementsByClassName('picture');
 
 let filteredData = [];
 let currentFilter = 'filter-default';
 
 const removePictures = () => {
-  if (pictures) {
-    [...pictures].forEach((item) => item.remove());
+  if (picturesNode) {
+    [...picturesNode].forEach((item) => item.remove());
   }
 };
 
 const isButton = (evt) => evt.target.tagName === 'BUTTON';
 
 const onButtonClick = (evt) => {
-  const selectedButton = imgFiltersForm.querySelector(`.${ACTIVE_CLASS}`);
+  const selectedButton = imgFiltersFormNode.querySelector(`.${ACTIVE_CLASS}`);
   if (isButton(evt)) {
     selectedButton.classList.toggle(`${ACTIVE_CLASS}`);
     evt.target.classList.toggle(`${ACTIVE_CLASS}`);
@@ -42,8 +42,8 @@ const applyFilter = (data) => {
 };
 
 const changeFilter = (data) => {
-  imgFiltersForm.addEventListener('click', onButtonClick);
-  imgFiltersForm.addEventListener('click', debounce(applyFilter.bind(null, data)));
+  imgFiltersFormNode.addEventListener('click', onButtonClick);
+  imgFiltersFormNode.addEventListener('click', debounce(applyFilter.bind(null, data)));
 };
 
 export { changeFilter };

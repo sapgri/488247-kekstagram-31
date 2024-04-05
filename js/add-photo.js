@@ -1,28 +1,28 @@
 const FILE_TYPES = ['.gif', '.jpg', '.jpeg', '.png'];
 
-const uploadFile = document.querySelector('#upload-file');
-const preview = document.querySelector('.img-upload__preview img');
-const effectList = document.querySelector('.effects__list');
-const smallImages = effectList.querySelectorAll('.effects__preview');
+const uploadFileNode = document.querySelector('#upload-file');
+const previewnNode = document.querySelector('.img-upload__preview img');
+const effectListNode = document.querySelector('.effects__list');
+const smallImagesNode = effectListNode.querySelectorAll('.effects__preview');
 
 const onUploadImageChange = () => {
-  const file = uploadFile.files[0];
+  const file = uploadFileNode.files[0];
   const fileName = file.name.toLowerCase();
 
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
   if (matches) {
     const objectURL = URL.createObjectURL(file);
-    preview.src = objectURL;
+    previewnNode.src = objectURL;
 
-    smallImages.forEach((evt) => {
+    smallImagesNode.forEach((evt) => {
       evt.style.backgroundImage = `url(${objectURL})`;
     });
 
-    preview.addEventListener('load', () => {
+    previewnNode.addEventListener('load', () => {
       URL.revokeObjectURL(objectURL);
     });
   }
 };
 
-uploadFile.addEventListener('change', onUploadImageChange);
+uploadFileNode.addEventListener('change', onUploadImageChange);

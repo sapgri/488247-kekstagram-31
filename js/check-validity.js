@@ -4,9 +4,9 @@ const MAX_HASHTAGS = 5;
 const MAX_SYMBOLS = 20;
 const MAX_DESCRIPTION_LENGTH = 140;
 
-const imgUploadForm = document.querySelector('.img-upload__form');
-const inputHashtags = imgUploadForm.querySelector('.text__hashtags');
-const inputDescription = imgUploadForm.querySelector('.text__description');
+const imgUploadFormNode = document.querySelector('.img-upload__form');
+const inputHashtagsNode = imgUploadFormNode.querySelector('.text__hashtags');
+const inputDescriptionNode = imgUploadFormNode.querySelector('.text__description');
 
 let errorMessage = '';
 
@@ -65,18 +65,18 @@ const isHashtagsValid = (value) => {
   });
 };
 
-const isDescriptionValid = () => inputDescription.value.length <= MAX_DESCRIPTION_LENGTH;
+const isDescriptionValid = () => inputDescriptionNode.value.length <= MAX_DESCRIPTION_LENGTH;
 
-const pristine = new Pristine(imgUploadForm, {
+const pristine = new Pristine(imgUploadFormNode, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-pristine.addValidator(inputHashtags, isHashtagsValid, getErrorMessage, 1, false);
+pristine.addValidator(inputHashtagsNode, isHashtagsValid, getErrorMessage, 1, false);
 
 pristine.addValidator(
-  inputDescription,
+  inputDescriptionNode,
   isDescriptionValid,
   'Текст комментария не должен превышать 140 символов, включая пробелы',
   1, false
