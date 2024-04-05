@@ -12,43 +12,43 @@ const SubmitButtonText = {
   SENDING: 'Сохраняю...',
 };
 
-const errorPopupNode = document.querySelector('#error').content.querySelector('.error');
-const successPopupNode = document.querySelector('#success').content.querySelector('.success');
-const imgUploadFormNode = document.querySelector('.img-upload__form');
-const uploadOverlayNode = imgUploadFormNode.querySelector('.img-upload__overlay');
-const uploadFileNode = imgUploadFormNode.querySelector('#upload-file');
-const imgUploadCancelNode = imgUploadFormNode.querySelector('.img-upload__cancel');
-const smallerNode = imgUploadFormNode.querySelector('.scale__control--smaller');
-const biggerNode = imgUploadFormNode.querySelector('.scale__control--bigger');
-const imgNode = imgUploadFormNode.querySelector('.img-upload__preview img');
-const scaleControlNode = imgUploadFormNode.querySelector('.scale__control--value');
-const effectLevelNode = imgUploadFormNode.querySelector('.img-upload__effect-level');
-const effectsListNode = imgUploadFormNode.querySelector('.effects__list');
-const inputHashtagsNode = imgUploadFormNode.querySelector('.text__hashtags');
-const inputDescriptionNode = imgUploadFormNode.querySelector('.text__description');
-const submitButtonNode = imgUploadFormNode.querySelector('.img-upload__submit');
+const errorPopup = document.querySelector('#error').content.querySelector('.error');
+const successPopup = document.querySelector('#success').content.querySelector('.success');
+const imgUploadForm = document.querySelector('.img-upload__form');
+const uploadOverlay = imgUploadForm.querySelector('.img-upload__overlay');
+const uploadFile = imgUploadForm.querySelector('#upload-file');
+const imgUploadCancel = imgUploadForm.querySelector('.img-upload__cancel');
+const smaller = imgUploadForm.querySelector('.scale__control--smaller');
+const bigger = imgUploadForm.querySelector('.scale__control--bigger');
+const img = imgUploadForm.querySelector('.img-upload__preview img');
+const scaleControl = imgUploadForm.querySelector('.scale__control--value');
+const effectLevel = imgUploadForm.querySelector('.img-upload__effect-level');
+const effectsList = imgUploadForm.querySelector('.effects__list');
+const inputHashtags = imgUploadForm.querySelector('.text__hashtags');
+const inputDescription = imgUploadForm.querySelector('.text__description');
+const submitButton = imgUploadForm.querySelector('.img-upload__submit');
 
 let scale = 1;
 
 const blockSubmitButton = () => {
-  submitButtonNode.disabled = true;
-  submitButtonNode.textContent = SubmitButtonText.SENDING;
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
 };
 
 const unblockSubmitButton = () => {
-  submitButtonNode.disabled = false;
-  submitButtonNode.textContent = SubmitButtonText.IDLE;
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.IDLE;
 };
 
 const onImgUploadClose = () => {
   document.body.classList.remove('modal-open');
-  uploadOverlayNode.classList.add('hidden');
-  effectLevelNode.classList.add('hidden');
-  imgNode.style.transform = '';
-  imgNode.style.filter = '';
+  uploadOverlay.classList.add('hidden');
+  effectLevel.classList.add('hidden');
+  img.style.transform = '';
+  img.style.filter = '';
   scale = 1;
   unblockSubmitButton();
-  imgUploadFormNode.reset();
+  imgUploadForm.reset();
   pristine.reset();
   document.removeEventListener('keydown', onEscapeKeydown);
 };
@@ -65,15 +65,15 @@ function onEscapeKeydown(evt) {
 
 const onPhotoSelect = () => {
   document.body.classList.add('modal-open');
-  uploadOverlayNode.classList.remove('hidden');
+  uploadOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onEscapeKeydown);
 };
 
 const changeZoom = (factor = 1) => {
   if (scale < 1 && factor > 0 || scale > SCALE_STEP && factor < 0) {
     scale += SCALE_STEP * factor;
-    imgNode.style.transform = `scale(${scale})`;
-    scaleControlNode.value = `${scale * PERCENTAGE_VALUE}%`;
+    img.style.transform = `scale(${scale})`;
+    scaleControl.value = `${scale * PERCENTAGE_VALUE}%`;
   }
 };
 
@@ -86,39 +86,39 @@ const onBiggerClick = () => {
 };
 
 const onHashtagInput = () => {
-  submitButtonNode.disabled = !pristine.validate();
+  submitButton.disabled = !pristine.validate();
 };
 
 const onCommentInput = () => {
-  submitButtonNode.disabled = !pristine.validate();
+  submitButton.disabled = !pristine.validate();
 };
 
 const onImgUploadFormSubmit = (evt) => {
   evt.preventDefault();
 
   if (pristine.validate()) {
-    inputHashtagsNode.value = inputHashtagsNode.value.trim().replaceAll(/\s+/g, ' ');
+    inputHashtags.value = inputHashtags.value.trim().replaceAll(/\s+/g, ' ');
     blockSubmitButton();
     sendData(new FormData(evt.target))
       .then(() => {
         onImgUploadClose();
-        showModal(successPopupNode, 'success');
+        showModal(successPopup, 'success');
       })
-      .catch(() => showModal(errorPopupNode, 'error'))
+      .catch(() => showModal(errorPopup, 'error'))
       .finally(() => unblockSubmitButton());
   }
 };
 
-imgUploadFormNode.addEventListener('submit', onImgUploadFormSubmit);
+imgUploadForm.addEventListener('submit', onImgUploadFormSubmit);
 
-uploadFileNode.addEventListener('change', onPhotoSelect);
+uploadFile.addEventListener('change', onPhotoSelect);
 
-imgUploadCancelNode.addEventListener('click', onImgUploadClose);
+imgUploadCancel.addEventListener('click', onImgUploadClose);
 
-smallerNode.addEventListener('click', onSmallerClick);
-biggerNode.addEventListener('click', onBiggerClick);
+smaller.addEventListener('click', onSmallerClick);
+bigger.addEventListener('click', onBiggerClick);
 
-effectsListNode.addEventListener('change', onEffectChange);
+effectsList.addEventListener('change', onEffectChange);
 
-inputHashtagsNode.addEventListener('input', onHashtagInput);
-inputDescriptionNode.addEventListener('input', onCommentInput);
+inputHashtags.addEventListener('input', onHashtagInput);
+inputDescription.addEventListener('input', onCommentInput);
