@@ -1,8 +1,8 @@
-const imgUploadWrapper = document.querySelector('.img-upload__wrapper');
-const slider = imgUploadWrapper.querySelector('.effect-level__slider');
-const effectLevel = imgUploadWrapper.querySelector('.img-upload__effect-level');
-const effectLevelValue = imgUploadWrapper.querySelector('.effect-level__value');
-const img = imgUploadWrapper.querySelector('.img-upload__preview img');
+const imgUploadWrapperNode = document.querySelector('.img-upload__wrapper');
+const sliderNode = imgUploadWrapperNode.querySelector('.effect-level__slider');
+const effectLevelNode = imgUploadWrapperNode.querySelector('.img-upload__effect-level');
+const effectLevelValueNode = imgUploadWrapperNode.querySelector('.effect-level__value');
+const imgNode = imgUploadWrapperNode.querySelector('.img-upload__preview img');
 
 const effects = {
   none: { min: 0, max: 1, start: 1, step: 0, styleFilter: 'none', unit: '' },
@@ -13,9 +13,9 @@ const effects = {
   heat: { min: 1, max: 3, start: 3, step: 0.1, styleFilter: 'brightness', unit: '' },
 };
 
-effectLevel.classList.add('hidden');
+effectLevelNode.classList.add('hidden');
 
-noUiSlider.create(slider, {
+noUiSlider.create(sliderNode, {
   start: 0,
   range: { min: 0, max: 1 },
   connect: 'lower',
@@ -30,26 +30,26 @@ noUiSlider.create(slider, {
 const setEffect = (effect) => {
   const { min, max, start, step, styleFilter, unit } = effect;
 
-  slider.noUiSlider.off('update');
-  slider.noUiSlider.updateOptions({
+  sliderNode.noUiSlider.off('update');
+  sliderNode.noUiSlider.updateOptions({
     start,
     step,
     range: { min, max },
   });
-  slider.noUiSlider.on('update', () => {
-    effectLevelValue.value = slider.noUiSlider.get();
-    img.style.filter = `${styleFilter}(${effectLevelValue.value}${unit})`;
+  sliderNode.noUiSlider.on('update', () => {
+    effectLevelValueNode.value = sliderNode.noUiSlider.get();
+    imgNode.style.filter = `${styleFilter}(${effectLevelValueNode.value}${unit})`;
   });
 };
 
 const onEffectChange = (evt) => {
   const effect = evt.target.value;
-  img.style.filter = '';
+  imgNode.style.filter = '';
 
   if (effect === 'none') {
-    effectLevel.classList.add('hidden');
+    effectLevelNode.classList.add('hidden');
   } else {
-    effectLevel.classList.remove('hidden');
+    effectLevelNode.classList.remove('hidden');
   }
   setEffect(effects[effect]);
 };

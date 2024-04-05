@@ -4,13 +4,13 @@ import { openBigPicture } from './open-big-picture.js';
 
 const SHOW_MESSAGE_TIME = 5000;
 
-const dataError = document.querySelector('#data-error').content.querySelector('.data-error');
-const imgFilters = document.querySelector('.img-filters');
+const dataErrorNode = document.querySelector('#data-error').content.querySelector('.data-error');
+const imgFiltersNode = document.querySelector('.img-filters');
 
 let photos = [];
 
 const onSuccess = (data) => {
-  imgFilters.classList.remove('img-filters--inactive');
+  imgFiltersNode.classList.remove('img-filters--inactive');
   photos = [...data];
   renderThumbnails(photos);
   changeFilter(photos);
@@ -18,9 +18,9 @@ const onSuccess = (data) => {
 };
 
 const onError = () => {
-  imgFilters.classList.add('img-filters--inactive');
-  document.body.append(dataError);
-  setTimeout(() => dataError.remove(), SHOW_MESSAGE_TIME);
+  imgFiltersNode.classList.add('img-filters--inactive');
+  document.body.append(dataErrorNode);
+  setTimeout(() => dataErrorNode.remove(), SHOW_MESSAGE_TIME);
 };
 
 export { onSuccess, onError };
