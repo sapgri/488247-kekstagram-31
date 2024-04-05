@@ -7,10 +7,10 @@ const Avatar = {
   WIDTH: 35,
 };
 
-const bigPictureSocialNode = document.querySelector('.big-picture__social');
-const socialCommentShownCountNode = bigPictureSocialNode.querySelector('.social__comment-shown-count');
-const socialCommentCountNode = bigPictureSocialNode.querySelector('.social__comment-count');
-const commentLoaderNode = bigPictureSocialNode.querySelector('.comments-loader');
+const bigPictureSocial = document.querySelector('.big-picture__social');
+const socialCommentShownCount = bigPictureSocial.querySelector('.social__comment-shown-count');
+const socialCommentCount = bigPictureSocial.querySelector('.social__comment-count');
+const commentLoader = bigPictureSocial.querySelector('.comments-loader');
 
 const renderComment = (comment, container) => {
   const { avatar, name, message } = comment;
@@ -35,18 +35,18 @@ const renderComment = (comment, container) => {
 
 const renderComments = (comments, container, quantity) => {
   container.innerHTML = '';
-  socialCommentShownCountNode.textContent = Math.min(comments.length, quantity);
+  socialCommentShownCount.textContent = Math.min(comments.length, quantity);
 
-  if (+socialCommentShownCountNode.textContent === comments.length) {
-    commentLoaderNode.classList.add('hidden');
+  if (+socialCommentShownCount.textContent === comments.length) {
+    commentLoader.classList.add('hidden');
   } else {
-    commentLoaderNode.classList.remove('hidden');
+    commentLoader.classList.remove('hidden');
   }
 
-  comments.slice(0, socialCommentShownCountNode.textContent)
+  comments.slice(0, socialCommentShownCount.textContent)
     .forEach((comment) => renderComment(comment, container));
 
-  socialCommentCountNode.childNodes[3].textContent = numDecline(
+  socialCommentCount.childNodes[3].textContent = numDecline(
     comments.length, ' комментария', ' комментариев', ' комментариев'
   );
 };
