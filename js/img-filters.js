@@ -21,8 +21,8 @@ const isButton = (evt) => evt.target.tagName === 'BUTTON';
 const onButtonClick = (evt) => {
   const selectedButton = imgFiltersForm.querySelector(`.${ACTIVE_CLASS}`);
   if (isButton(evt)) {
-    selectedButton.classList.toggle(`${ACTIVE_CLASS}`);
-    evt.target.classList.toggle(`${ACTIVE_CLASS}`);
+    selectedButton.classList.remove(`${ACTIVE_CLASS}`);
+    evt.target.classList.add(`${ACTIVE_CLASS}`);
     currentFilter = evt.target.id;
   }
 };

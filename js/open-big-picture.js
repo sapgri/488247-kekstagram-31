@@ -25,7 +25,6 @@ const onCommentsLoad = () => {
 const onBigPictureClose = () => {
   document.body.classList.remove('modal-open');
   bigPicture.classList.add('hidden');
-  commentLoader.removeEventListener('click', onCommentsLoad);
   document.removeEventListener('keydown', onEscapeKeydown);
 };
 
@@ -56,14 +55,14 @@ const openBigPicture = (data) => {
 
       renderComments(comments, socialComments, numberShownComments);
 
-      commentLoader.addEventListener('click', onCommentsLoad);
-
       document.addEventListener('keydown', onEscapeKeydown);
     }
   };
 
   pictures.addEventListener('click', onThumbnailClick);
 };
+
+commentLoader.addEventListener('click', onCommentsLoad);
 
 bigPictureCancel.addEventListener('click', onBigPictureClose);
 

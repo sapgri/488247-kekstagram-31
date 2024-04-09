@@ -109,16 +109,16 @@ const onImgUploadFormSubmit = (evt) => {
   }
 };
 
-imgUploadForm.addEventListener('submit', onImgUploadFormSubmit);
-
 uploadFile.addEventListener('change', onPhotoSelect);
-
-imgUploadCancel.addEventListener('click', onImgUploadClose);
 
 smaller.addEventListener('click', onSmallerClick);
 bigger.addEventListener('click', onBiggerClick);
+
+imgUploadCancel.addEventListener('click', onImgUploadClose);
 
 effectsList.addEventListener('change', onEffectChange);
 
 inputHashtags.addEventListener('input', onHashtagInput);
 inputDescription.addEventListener('input', onCommentInput);
+
+imgUploadForm.addEventListener('submit', onImgUploadFormSubmit);
